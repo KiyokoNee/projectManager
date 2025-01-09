@@ -16,11 +16,11 @@
 		<link rel="stylesheet" href="/css/style.css" />
     	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 	</head>
-	<body class="centered-content">
+	<body class="w-75 mx-auto my-5">
 		<div class="d-flex justify-content-between">
 			<div>
 				<h1>Welcome, <c:out value="${firstname}"></c:out>!</h1>
-				<p>All Projects</p>
+				<p class="fw-bold fst-italic mt-4">All Projects</p>
 			</div>
 			<div class="d-flex flex-column">
 				<a href="/logout">Logout</a>
@@ -33,19 +33,19 @@
 					<th>Project</th>
 					<th>Team Lead</th>
 					<th>Due Date</th>
-					<th>Actions</th>
+					<th class="text-center">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="project" items="${uninvolvedProjects}">
-					<tr>
+					<tr class="align-middle">
 						<td><a href="/projects/${project.id}"><c:out value="${project.title}"></c:out></a></td>
 						<td><c:out value="${project.teamLead.firstName}"></c:out></td>
 						<td>
 							<fmt:parseDate value="${project.dueDate }" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
 							<fmt:formatDate value="${parsedDate}" pattern="MMM dd, yyyy" />
 						</td>
-						<td>
+						<td class="text-center">
 							<form method="post" action="/projects/join/${project.id}" >
 								<input type="hidden" name="_method" value="put" />
 								<button class="btn btn-link" type="submit">Join Team</button>
@@ -55,26 +55,26 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<p>Your Projects</p>
+		<p class="fw-bold fst-italic mt-4">Your Projects</p>
 		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
 					<th>Project</th>
 					<th>Team Lead</th>
 					<th>Due Date</th>
-					<th>Actions</th>
+					<th class="text-center">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="project" items="${involvedProjects}">
-					<tr>
+					<tr class="align-middle">
 						<td><a href="/projects/${project.id}"><c:out value="${project.title}"></c:out></a></td>
 						<td><c:out value="${project.teamLead.firstName}"></c:out></td>
 						<td>
 							<fmt:parseDate value="${project.dueDate }" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
 							<fmt:formatDate value="${parsedDate}" pattern="MMM dd, yyyy" />
 						</td>
-						<td>
+						<td class="text-center">
 							<c:if test="${userId == project.teamLead.id}">
 								<a href="/projects/edit/${project.id}">Edit</a>
 							</c:if>

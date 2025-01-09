@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import com.gearing.projectmanager.models.Project;
+import com.gearing.projectmanager.models.Task;
 import com.gearing.projectmanager.models.User;
 import com.gearing.projectmanager.repositories.ProjectRepository;
 import com.gearing.projectmanager.repositories.UserRepository;
@@ -43,6 +44,21 @@ public class ProjectService {
 		projects.removeAll(getProjectsByTeamLead(team));
 		
 		return projects;
+	}
+	
+	public boolean projectContainsUser(Long projectId, Long userId) {
+		Optional<Project> optionalProject = projectRepo.findById(projectId);
+		Optional<User> optionalUser = userRepo.findById(userId);
+		
+		if(optionalProject.isEmpty() || optionalUser.isEmpty())
+			return false;
+		
+		Project project = optionalProject.get();
+		User user = optionalUser.get();
+		
+		if(project.getTeam().contains(user) || project.getTeamLead().equals(user))
+			return true;
+		return false;
 	}
 	
 	public List<Project> getProjectByTeamIncludes(User team) {
@@ -108,6 +124,7 @@ public class ProjectService {
 	
 	public void deleteProject(Project project) {
 		project.getTeam().clear();
+		taskServ.deleteTaskList(project.getTasks());
 		projectRepo.save(project);
 		
 		projectRepo.delete(project);

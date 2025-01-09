@@ -17,7 +17,7 @@
 		<link rel="stylesheet" href="/css/style.css" />
     	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 	</head>
-	<body class="mx-auto mt-5 w-75">
+	<body class="mx-auto my-5 w-75">
 		<div class="d-flex justify-content-between mb-3">
 			<h2>Project Details</h2>
 			<a href="/">Dashboard</a>
@@ -25,23 +25,25 @@
 		<table class="table table-borderless">
 			<tbody>
 				<tr>
-					<td>Project:</td>
+					<td class="fw-bold">Project:</td>
 					<td><c:out value="${project.title}"></c:out></td>
 				</tr>
 				<tr>
-					<td>Description:</td>
+					<td class="fw-bold">Description:</td>
 					<td><c:out value="${project.description}"></c:out></td>
 				</tr>
 				<tr>
-					<td>Due Date:</td>
+					<td class="fw-bold">Due Date:</td>
 					<td><c:out value="${project.dueDate}"></c:out></td>
 				</tr>
 			</tbody>
 		</table>
 		<a href="/projects/${project.id}/tasks">See tasks!</a>
-		<form method="post" action="/projects/delete/${project.id}" >
-			<input type="hidden" name="_method" value="delete" />
-			<button class="btn btn-danger float-end" type="submit">Delete Project</button>
-		</form>
+		<c:if test="${project.teamLead.id == userId }">
+			<form method="post" action="/projects/delete/${project.id}" >
+				<input type="hidden" name="_method" value="delete" />
+				<button class="btn btn-danger float-end" type="submit">Delete Project</button>
+			</form>
+		</c:if>
 	</body>
 </html>

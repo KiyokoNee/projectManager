@@ -17,29 +17,39 @@
 		<link rel="stylesheet" href="/css/style.css" />
     	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 	</head>
-	<body>
-		<form:form class="full-form" modelAttribute="newProject" method="post" action="/projects/create" >
-			<h2>Create a Project</h2>
+	<body class="w-75 mx-auto my-5">
+		<form:form class="w-50 mx-auto" modelAttribute="newProject" method="post" action="/projects/create" >
+			<h2 class="mb-4">Create a Project</h2>
+			<table class="table table-borderless">
+				<tbody>
+					<tr>
+						<td><form:label path="title">Project Title: </form:label></td>
+						<td>
+							<form:input path="title" />
+							<span class="text-danger"><form:errors path="title" /></span>
+						</td>
+					</tr>
+					<tr>
+						<td><form:label path="description">Project Description: </form:label></td>
+						<td>
+							<textarea id="description" name="description" ><c:out value="${newProject.description}"></c:out></textarea>
+							<span class="text-danger"><form:errors path="description" /></span>
+						</td>
+					</tr>
+					<tr>
+						<td><form:label path="dueDate">Due Date: </form:label></td>
+						<td>
+							<input type="date" name="dueDate" value="${newProject.dueDate}" />
+							<span class="text-danger"><form:errors path="dueDate" /></span>
+						</td>
+					</tr>
+					<tr>
+						<td><a class="btn btn-danger float-start" href="/dashboard">Cancel</a></td>
+						<td class="text-center"><button class="btn btn-success" type="submit">Submit</button></td>
+					</tr>
+				</tbody>
+			</table>
 			<input type="hidden" id="teamLead" name="teamLead" value="${userId}" />
-			<span class="text-danger"><form:errors path="title" /></span>
-			<div class="d-flex justify-content-between">
-				<form:label path="title">Project Title: </form:label>
-				<form:input path="title" />
-			</div>	
-			<span class="text-danger"><form:errors path="description" /></span>
-			<div class="d-flex justify-content-between">
-				<form:label path="description">Project Description: </form:label>
-				<textarea id="description" name="description" ><c:out value="${newProject.description}"></c:out></textarea>
-			</div>	
-			<span class="text-danger"><form:errors path="dueDate" /></span>
-			<div class="d-flex justify-content-between">
-				<form:label path="dueDate">Due Date: </form:label>
-				<input type="date" name="dueDate" value="${newProject.dueDate}" />
-			</div>
-			<div>
-				<a class="btn btn-danger float-start" href="/dashboard">Cancel</a>
-				<button class="btn btn-success float-end" type="submit">Submit</button>
-			</div>
 		</form:form>
 	</body>
 </html>

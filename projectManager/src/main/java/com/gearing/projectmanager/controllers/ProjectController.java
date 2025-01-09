@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gearing.projectmanager.models.Project;
+import com.gearing.projectmanager.models.Task;
 import com.gearing.projectmanager.models.User;
 import com.gearing.projectmanager.services.ProjectService;
+import com.gearing.projectmanager.services.TaskService;
 import com.gearing.projectmanager.services.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +30,8 @@ public class ProjectController {
 	private ProjectService projectServ;
 	@Autowired
 	private UserService userServ;
+	@Autowired
+	private TaskService taskServ;
 	
 	@GetMapping("/new")
 	public String projectForm(Model model, HttpSession session) {
@@ -66,8 +70,17 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{id}/tasks")
-	public String projectTasks(Model model, HttpSession session) {
+	public String projectTasks(Model model, @PathVariable Long id, HttpSession session) {
+		Long userId = (Long)session.getAttribute("userId");
+		Project project = projectServ.getProjectById(id);
 		
+		if(userId == null || project == null)
+			return "redirect:/";
+		if(model.getAttribute("taskForm") == null)
+			model.addAttribute("taskForm", new Task());
+		
+		model.addAttribute("project", project);
+		model.addAttribute("canAddTasks", projectServ.projectContainsUser(id, userId));
 		
 		return "projecttasks.jsp";
 	}
@@ -89,6 +102,31 @@ public class ProjectController {
 		}
 		
 		return "redirect:/dashboard";
+	}
+	
+	@PostMapping("/{projectId}/tasks/add")
+	public String taskCreate(Model model, @PathVariable Long projectId, @Valid @ModelAttribute("taskForm") Task taskForm,
+			BindingResult result, HttpSession session, RedirectAttributes redirectAttributes) {
+		if(session.getAttribute("userId") == null)
+			return "redirect:/";
+
+		if(result.hasErrors()) {
+			// Set up flash data so we can redirect to the page with errors and data
+			System.out.println(result.getAllErrors());
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.taskForm", result);
+			redirectAttributes.addFlashAttribute("taskForm", taskForm);
+			
+			return "redirect:/projects/" + projectId + "/tasks";
+		}
+		
+		User user = userServ.findById((Long)session.getAttribute("userId"));
+		Project project = projectServ.getProjectById(projectId);
+		
+		taskForm.setCreator(user);
+		taskForm.setProject(project);
+		taskServ.createTask(taskForm);
+		
+		return "redirect:/projects/" + projectId + "/tasks";
 	}
 	
 	@PutMapping("/update")

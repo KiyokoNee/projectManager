@@ -25,4 +25,10 @@ public class TaskService {
 	public void deleteTask(Task task) {
 		taskRepo.delete(task);
 	}
+	
+	public void deleteTaskList(List<Task> tasks) {
+		for(Task task : tasks) {
+			deleteTask(task);
+		}
+	}
 }
