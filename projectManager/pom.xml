@@ -89,11 +89,6 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
-        <!-- DEPENDENCY FOR SECURITY -->
-        <dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
         <!-- DEPENDENCIES FOR BOOTSTRAP -->
         <dependency>
             <groupId>org.webjars</groupId>
