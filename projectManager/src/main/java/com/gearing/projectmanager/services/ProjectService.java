@@ -123,9 +123,15 @@ public class ProjectService {
 	}
 	
 	public void deleteProject(Project project) {
-		project.getTeam().clear();
-		taskServ.deleteTaskList(project.getTasks());
-		projectRepo.save(project);
+		// Remove all members of the team to 
+		for(User member: project.getTeam()) {
+			project.getTeam().remove(member);
+			projectRepo.save(project);
+		}
+		
+		for(Task task: project.getTasks()) {
+			taskServ.deleteTask(task);
+		}
 		
 		projectRepo.delete(project);
 	}
