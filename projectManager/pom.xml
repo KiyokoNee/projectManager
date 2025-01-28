@@ -8,12 +8,12 @@
 		<version>3.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.gearing.projecttemplate</groupId>
+	<groupId>com.gearing.projectmanager</groupId>
 	<artifactId>projectTemplate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>projectTemplate</name>
-	<description>Project Template - assignment</description>
+	<name>projectManager</name>
+	<description>Project Manager - optional assignment</description>
 	<url/>
 	<licenses>
 		<license/>

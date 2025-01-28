@@ -33,6 +33,7 @@ public class ProjectController {
 	@Autowired
 	private TaskService taskServ;
 	
+	// All Get Requests
 	@GetMapping("/new")
 	public String projectForm(Model model, HttpSession session) {
 		if(session.getAttribute("userId") == null)
@@ -85,6 +86,7 @@ public class ProjectController {
 		return "projecttasks.jsp";
 	}
 	
+	// All Post Requests
 	@PostMapping("/create")
 	public String projectCreate(Model model, @Valid @ModelAttribute("newProject") Project newProject,
 			BindingResult result, HttpSession session, RedirectAttributes redirectAttributes) {
@@ -129,6 +131,7 @@ public class ProjectController {
 		return "redirect:/projects/" + projectId + "/tasks";
 	}
 	
+	// All Put Requests
 	@PutMapping("/update")
 	public String projectUpdate(Model model, HttpSession session, @Valid @ModelAttribute("currProject") Project currProject, 
 			BindingResult result, RedirectAttributes redirectAttributes) {
@@ -178,6 +181,7 @@ public class ProjectController {
 		return "redirect:/dashboard";
 	}
 	
+	// Any Delete Requests - WARNING: Be sure the services remove entity references before deletion if using FetchType.LAZY
 	@DeleteMapping("/delete/{id}")
 	public String projectDelete(@PathVariable Long id, HttpSession session) {
 		// Pull data for validation
